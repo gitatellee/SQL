@@ -1,0 +1,43 @@
+SELECT *
+FROM fortune_companies;
+
+-- 1. [filter companies where average tenure is 5 years and have healthcare benefits]
+SELECT company_name, avg_employee_tenure, healthcare_benefits
+FROM fortune_companies
+WHERE avg_employee_tenure >5
+AND healthcare_benefits = 1
+GROUP BY company_name
+ORDER BY avg_employee_tenure desc
+;
+
+-- 2. [calculated the revenue total of different industries and added a column for that total named total revenue]
+SELECT industry, 
+  SUM (revenue) AS total_revenue
+FROM fortune_companies
+GROUP BY industry;
+
+-- 3. [filter companies with healthcare, maternity leave >+12 weeks, employee tenure < 5]
+
+SELECT company_name, maternity_leave_weeks,
+CASE
+  WHEN maternity_leave_weeks <= 8 THEN 'Low'
+  WHEN maternity_leave_weeks BETWEEN 9 AND 11 THEN 'Medium'
+  ELSE 'High'
+END AS maternity_leave_rating
+FROM fortune_companies
+ORDER BY maternity_leave_weeks desc;
+
+
+-- 4. [filter tech industry with revenue greater than 200]
+
+SELECT company_name, industry, revenue
+FROM fortune_companies
+GROUP BY company_name
+HAVING revenue > 200 AND industry = 'Technology'
+ORDER BY(revenue) DESC;
+
+-- 5. [find the compay with lowest revenue]
+
+SELECT company_name, 
+  MIN (revenue)
+FROM fortune_companies;
